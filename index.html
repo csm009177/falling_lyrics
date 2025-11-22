@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 100px;
+        }
+
+        .cloud {
+            position: relative;
+            background: white;
+            width: 250px;
+            height: 80px;
+            border-radius: 100px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 100px;
+            height: 100px;
+            top: -50px;
+            left: 30px;
+        }
+
+        .cloud::after {
+            width: 120px;
+            height: 120px;
+            top: -60px;
+            right: 30px;
+        }
+
+        .cloud h2 {
+            position: relative;
+            z-index: 1;
+            color: #667eea;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .rain {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            animation: fall linear infinite;
+            opacity: 0;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(calc((100vh - 180px) / 2));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cloud">
+            <h2>Data Cloude Rain</h2>
+        </div>
+    </div>
+    <script>
+        const container = document.querySelector('.container');
+        const cloud = document.querySelector('.cloud');
+
+        // 떨어질 문자들 배열
+        const characters = [
+            '우', '리', '는', '이', '미', '오', '래', '전', '부', '터', '음', '을', '조', '합', '하', '여', '소', '통', '하', '는', '말', '이', '있', '었', '지', '만', '중', '국', '의', '억', '압', '에', '의', '해', '서', '구', '조', '적', '으', '로', '문', '제', '가', '있', '는', '한', '자', '를', '사', '용', '하', '게', '되', '었', '다', '세', '종', '대', '왕', '은', '백', '성', '들', '이', '쉽', '게', '배', '우', '고', '쓸', '수', '있', '는', '글', '자', '를', '만', '들', '고', '자', '훈', '민', '정', '음', '을', '창', '제', '하', '였', '다', '훈', '민', '정', '음', '은', '자', '음', '과', '모', '음', '의', '결', '합', '으', '로', '이', '루', '어', '진', '과', '학', '적', '인', '문', '자', '체', '계', '로', '누', '구', '나', '쉽', '게', '익', '힐', '수', '있', '도', '록', '고', '안', '되', '었', '다', '이', '로', '인', '해', '백', '성', '들', '은', '자', '신', '의', '생', '각', '과', '감', '정', '을', '글', '로', '표', '현', '할', '수', '있', '게', '되', '었', '고', '이', '는', '문', '화', '와', '지', '식', '의', '확', '산', '에', '크', '게', '기', '여', '하', '였', '다', '오', '늘', '날', '에', '도', '훈', '민', '정', '음', '은', '한', '국', '어', '의', '기', '초', '를', '이', '루', '며', '한', '국', '인', '의', '정', '체', '성', '과', '문', '화', '유', '산', '으', '로', '서', '중', '요', '한', '역', '할', '을', '하', '고', '있', '다',
+            '☁', '💧', '🌧', '💙', '✨'
+        ];
+
+        function createRainDrop() {
+            const rain = document.createElement('span');
+            rain.classList.add('rain');
+            
+            // 랜덤 문자 선택
+            const randomChar = characters[Math.floor(Math.random() * characters.length)];
+            rain.textContent = randomChar;
+            
+            // 구름의 위치 가져오기
+            const cloudRect = cloud.getBoundingClientRect();
+            const cloudLeft = cloudRect.left;
+            const cloudRight = cloudRect.right;
+            const cloudBottom = cloudRect.bottom;
+            
+            // 구름 영역 내에서 랜덤 위치 설정
+            const randomX = cloudLeft + Math.random() * (cloudRight - cloudLeft);
+            rain.style.left = randomX + 'px';
+            rain.style.top = cloudBottom + 'px';
+            
+            // 랜덤 애니메이션 속도 (2초 ~ 4초)
+            const duration = 2 + Math.random() * 2;
+            rain.style.animationDuration = duration + 's';
+            
+            // 랜덤 딜레이
+            const delay = Math.random() * 0.5;
+            rain.style.animationDelay = delay + 's';
+            
+            container.appendChild(rain);
+            
+            // 애니메이션 완료 후 요소 제거
+            setTimeout(() => {
+                rain.remove();
+            }, (duration + delay) * 1000);
+        }
+
+        // 일정 간격으로 빗방울 생성
+        setInterval(createRainDrop, 200);
+
+        // 초기 빗방울 몇 개 생성
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createRainDrop, i * 100);
+        }
+    </script>
+</body>
+</html>
