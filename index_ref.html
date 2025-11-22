@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 모든 요소 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 전체 페이지 배경 및 중앙 정렬 */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* 스크롤바 숨김 */
+        }
+
+        /* 전체 컨테이너 */
+        .container {
+            position: relative; 
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 100px;
+        }
+
+        /* 구름 본체 (타원형) */
+        .cloud {
+            position: relative;
+            background: white;
+            width: 250px;
+            height: 80px;
+            border-radius: 100px; /* 둥근 타원형 */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 3s ease-in-out infinite; /* 커졌다 작아지는 애니메이션 */
+        }
+
+        /* 구름 좌우 봉우리 공통 스타일 */
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%; /* 완전한 원 */
+        }
+
+        /* 구름 왼쪽 작은 봉우리 */
+        .cloud::before {
+            width: 100px;
+            height: 100px;
+            top: -50px;
+            left: 30px;
+        }
+
+        /* 구름 오른쪽 큰 봉우리 */
+        .cloud::after {
+            width: 120px;
+            height: 120px;
+            top: -60px;
+            right: 30px;
+        }
+
+        /* 구름 안의 제목 텍스트 */
+        .cloud h2 {
+            position: relative;
+            z-index: 1; /* 구름 위에 표시 */
+            color: #667eea;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* 떨어지는 문자 스타일 */
+        .rain {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            animation: fall linear infinite; /* 떨어지는 애니메이션 */
+            opacity: 0;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* 빛나는 효과 */
+        }
+
+        /* 비 떨어지는 애니메이션 */
+        @keyframes fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(calc((100vh - 180px) / 2));
+            }
+        }
+
+        /* 구름 커졌다 작아지는 애니메이션 */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1); /* 원래 크기 */
+            }
+            50% {
+                transform: scale(1.1); /* 1.1배 확대 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cloud">
+            <h2>Data Cloude Rain</h2>
+        </div>
+    </div>
+    <script>
+        // DOM 요소 선택
+        const container = document.querySelector('.container');
+        const cloud = document.querySelector('.cloud');
+
+        // 떨어질 문자들 배열 (훈민정음 관련 텍스트)
+        const characters = [
+            '우', '리', '는', '이', '미', '오', '래', '전', '부', '터', '음', '을', '조', '합', '하', '여', '소', '통', '하', '는', '말', '이', '있', '었', '지', '만', '중', '국', '의', '억', '압', '에', '의', '해', '서', '구', '조', '적', '으', '로', '문', '제', '가', '있', '는', '한', '자', '를', '사', '용', '하', '게', '되', '었', '다', '세', '종', '대', '왕', '은', '백', '성', '들', '이', '쉽', '게', '배', '우', '고', '쓸', '수', '있', '는', '글', '자', '를', '만', '들', '고', '자', '훈', '민', '정', '음', '을', '창', '제', '하', '였', '다', '훈', '민', '정', '음', '은', '자', '음', '과', '모', '음', '의', '결', '합', '으', '로', '이', '루', '어', '진', '과', '학', '적', '인', '문', '자', '체', '계', '로', '누', '구', '나', '쉽', '게', '익', '힐', '수', '있', '도', '록', '고', '안', '되', '었', '다', '이', '로', '인', '해', '백', '성', '들', '은', '자', '신', '의', '생', '각', '과', '감', '정', '을', '글', '로', '표', '현', '할', '수', '있', '게', '되', '었', '고', '이', '는', '문', '화', '와', '지', '식', '의', '확', '산', '에', '크', '게', '기', '여', '하', '였', '다', '오', '늘', '날', '에', '도', '훈', '민', '정', '음', '은', '한', '국', '어', '의', '기', '초', '를', '이', '루', '며', '한', '국', '인', '의', '정', '체', '성', '과', '문', '화', '유', '산', '으', '로', '서', '중', '요', '한', '역', '할', '을', '하', '고', '있', '다',
+            '☁', '💧', '🌧', '💙', '✨' // 이모지
+        ];
+
+        // 빗방울(문자) 생성 함수
+        function createRainDrop() {
+            const rain = document.createElement('span');
+            rain.classList.add('rain');
+            
+            // 배열에서 랜덤으로 문자 선택
+            const randomChar = characters[Math.floor(Math.random() * characters.length)];
+            rain.textContent = randomChar;
+            
+            // 구름의 현재 위치 정보 가져오기
+            const cloudRect = cloud.getBoundingClientRect();
+            const cloudLeft = cloudRect.left;
+            const cloudRight = cloudRect.right;
+            const cloudBottom = cloudRect.bottom;
+            
+            // 구름 영역 내에서 랜덤한 X 위치 설정
+            const randomX = cloudLeft + Math.random() * (cloudRight - cloudLeft);
+            rain.style.left = randomX + 'px';
+            rain.style.top = cloudBottom + 'px';
+            
+            // 랜덤 애니메이션 속도 설정 (2초 ~ 4초)
+            const duration = 2 + Math.random() * 2;
+            rain.style.animationDuration = duration + 's';
+            
+            // 랜덤 시작 딜레이 설정 (0 ~ 0.5초)
+            const delay = Math.random() * 0.5;
+            rain.style.animationDelay = delay + 's';
+            
+            // 컨테이너에 빗방울 추가
+            container.appendChild(rain);
+            
+            // 애니메이션 완료 후 DOM에서 요소 제거 (메모리 최적화)
+            setTimeout(() => {
+                rain.remove();
+            }, (duration + delay) * 1000);
+        }
+
+        // 200ms마다 새로운 빗방울 생성
+        setInterval(createRainDrop, 200);
+
+        // 페이지 로드 시 초기 빗방울 10개 생성 (시차를 두고)
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createRainDrop, i * 100);
+        }
+    </script>
+</body>
+</html>
