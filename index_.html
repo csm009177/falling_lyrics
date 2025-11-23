@@ -112,6 +112,29 @@
             font-weight: bold;
             letter-spacing: 1px;
         }
+
+        .rain {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            animation : fall;
+            opacity: 0;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+
+        }
+
+        @keyframes fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(calc((100vh - 180px) / 2));
+            }
+        }
+
     </style>
 </head>
 
@@ -133,8 +156,15 @@
             '☁', '💧', '🌧', '💙', '✨' // 이모지
         ];
 
+        function rainDrop() {
+            const rain = document.createElement('div');
 
+            // 배열에서 랜덤 추출
+            
 
+        }
+
+        rainDrop();
 
     </script>
 </body>
