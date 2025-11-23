@@ -117,7 +117,7 @@
             color: white;
             font-size: 20px;
             font-weight: bold;
-            animation : fall;
+            animation: fall;
             opacity: 0;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 
@@ -134,7 +134,6 @@
                 transform: translateY(calc((100vh - 180px) / 2));
             }
         }
-
     </style>
 </head>
 
@@ -159,12 +158,19 @@
         function rainDrop() {
             const rain = document.createElement('div');
 
+            for (let i = 0; i < characters.length; i++) {
+                console.log(characters[i]);
+                rain.textContent = characters[i];
+            }
             // 배열에서 랜덤 추출
-            
+
+            cont.appendChild(rain);
 
         }
 
-        rainDrop();
+        for (let i = 0; i < 10; i++) {
+            setTimeout(rainDrop, i * 100);
+        }
 
     </script>
 </body>

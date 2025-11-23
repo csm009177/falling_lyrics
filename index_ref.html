@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +21,13 @@
             align-items: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: Arial, sans-serif;
-            overflow: hidden; /* 스크롤바 숨김 */
+            overflow: hidden;
+            /* 스크롤바 숨김 */
         }
 
         /* 전체 컨테이너 */
         .container {
-            position: relative; 
+            position: relative;
             width: 100%;
             height: 100vh;
             display: flex;
@@ -40,12 +42,14 @@
             background: white;
             width: 250px;
             height: 80px;
-            border-radius: 100px; /* 둥근 타원형 */
+            border-radius: 100px;
+            /* 둥근 타원형 */
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: pulse 3s ease-in-out infinite; /* 커졌다 작아지는 애니메이션 */
+            animation: pulse 3s ease-in-out infinite;
+            /* 커졌다 작아지는 애니메이션 */
         }
 
         /* 구름 좌우 봉우리 공통 스타일 */
@@ -54,7 +58,8 @@
             content: '';
             position: absolute;
             background: white;
-            border-radius: 50%; /* 완전한 원 */
+            border-radius: 50%;
+            /* 완전한 원 */
         }
 
         /* 구름 왼쪽 작은 봉우리 */
@@ -76,7 +81,8 @@
         /* 구름 안의 제목 텍스트 */
         .cloud h2 {
             position: relative;
-            z-index: 1; /* 구름 위에 표시 */
+            z-index: 1;
+            /* 구름 위에 표시 */
             color: #667eea;
             font-size: 18px;
             font-weight: bold;
@@ -89,9 +95,12 @@
             color: white;
             font-size: 20px;
             font-weight: bold;
-            animation: fall linear infinite; /* 떨어지는 애니메이션 */
-            opacity: 0; /* 초기에는 투명 */
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* 빛나는 효과 */
+            animation: fall linear infinite;
+            /* 떨어지는 애니메이션 */
+            opacity: 0;
+            /* 초기에는 투명 */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            /* 빛나는 효과 */
         }
 
         /* 비 떨어지는 애니메이션 */
@@ -100,6 +109,7 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+
             100% {
                 opacity: 0;
                 transform: translateY(calc((100vh - 180px) / 2));
@@ -108,15 +118,21 @@
 
         /* 구름 커졌다 작아지는 애니메이션 */
         @keyframes pulse {
-            0%, 100% {
-                transform: scale(1); /* 원래 크기 */
+
+            0%,
+            100% {
+                transform: scale(1);
+                /* 원래 크기 */
             }
+
             50% {
-                transform: scale(1.1); /* 1.1배 확대 */
+                transform: scale(1.1);
+                /* 1.1배 확대 */
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="cloud">
@@ -135,49 +151,59 @@
         ];
 
         // 빗방울(문자) 생성 함수
-        function createRainDrop() {
-            const rain = document.createElement('span');
-            rain.classList.add('rain');
-            
-            // 배열에서 랜덤으로 문자 선택
-            const randomChar = characters[Math.floor(Math.random() * characters.length)];
+        function rainDrop() {
+            // 1. div 요소 생성
+            const rain = document.createElement('div');
+
+            // 2. 배열에서 랜덤 문자 추출
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            const randomChar = characters[randomIndex];
             rain.textContent = randomChar;
-            
-            // 구름의 현재 위치 정보 가져오기
+
+            // 3. CSS 스타일 직접 적용 (classList 대신)
+            rain.style.position = 'absolute';
+            rain.style.color = 'white';
+            rain.style.fontSize = '20px';
+            rain.style.fontWeight = 'bold';
+            rain.style.opacity = '0';
+            rain.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+            rain.style.animation = 'fall linear infinite';
+
+            // 4. 구름 위치 정보 가져오기
             const cloudRect = cloud.getBoundingClientRect();
             const cloudLeft = cloudRect.left;
             const cloudRight = cloudRect.right;
             const cloudBottom = cloudRect.bottom;
-            
-            // 구름 영역 내에서 랜덤한 X 위치 설정
+
+            // 5. 랜덤 X 위치 설정
             const randomX = cloudLeft + Math.random() * (cloudRight - cloudLeft);
             rain.style.left = randomX + 'px';
             rain.style.top = cloudBottom + 'px';
-            
-            // 랜덤 애니메이션 속도 설정 (2초 ~ 4초)
+
+            // 6. 랜덤 애니메이션 속도 (2초 ~ 4초)
             const duration = 2 + Math.random() * 2;
             rain.style.animationDuration = duration + 's';
-            
-            // 랜덤 시작 딜레이 설정 (0 ~ 0.5초)
+
+            // 7. 랜덤 시작 딜레이 (0 ~ 0.5초)
             const delay = Math.random() * 0.5;
             rain.style.animationDelay = delay + 's';
-            
-            // 컨테이너에 빗방울 추가
+
+            // 8. 컨테이너에 추가
             container.appendChild(rain);
-            
-            // 애니메이션 완료 후 DOM에서 요소 제거 (메모리 최적화)
+
+            // 9. 애니메이션 끝나면 제거
             setTimeout(() => {
                 rain.remove();
             }, (duration + delay) * 1000);
         }
 
-        // 200ms마다 새로운 빗방울 생성
-        setInterval(createRainDrop, 200);
+        // 200ms마다 빗방울 생성
+        setInterval(rainDrop, 200);
 
-        // 페이지 로드 시 초기 빗방울 10개 생성 (시차를 두고)
         for (let i = 0; i < 10; i++) {
-            setTimeout(createRainDrop, i * 100);
+            setTimeout(rainDrop, i * 100);
         }
     </script>
 </body>
+
 </html>
